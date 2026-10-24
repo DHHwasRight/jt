@@ -1,0 +1,28 @@
+[package]
+name = "jt-lsp"
+description = "Language server for jt `.jt` template files"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "jt-lsp"
+path = "src/main.rs"
+
+[dependencies]
+jt-core = { workspace = true }
+proc-macro2 = { workspace = true, features = ["span-locations"] }
+quote = { workspace = true }
+syn = { workspace = true }
+prettyplease = "0.2"
+lsp-server = "0.10"
+lsp-types = "0.97"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+url = "2"
+walkdir = "2"
+
+[dev-dependencies]
+serde_json = "1"
+url = "2"

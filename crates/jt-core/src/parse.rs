@@ -65,15 +65,15 @@ fn try_template(input: ParseStream) -> Result<Option<Template>> {
     }
     input.advance_to(&fork);
 
-    let body = if input.peek(token::Brace) {
+    let (body, end) = if input.peek(token::Brace) {
         let content;
-        braced!(content in input);
-        Value::Object(parse_entries(&content)?)
+        let brace = braced!(content in input);
+        (Value::Object(parse_entries(&content)?), brace.span.close())
     } else if input.peek(Token![=]) {
         input.parse::<Token![=]>()?;
         let value = parse_value(input)?;
-        input.parse::<Token![;]>()?;
-        value
+        let semi = input.parse::<Token![;]>()?;
+        (value, semi.span)
     } else {
         return Err(input.error(
             "expected a template body: `{ \"key\": value, ... }` for an object, \
@@ -86,6 +86,7 @@ fn try_template(input: ParseStream) -> Result<Option<Template>> {
         vis,
         sig,
         body,
+        end,
     }))
 }
 
@@ -142,7 +143,15 @@ fn classify(tokens: TokenStream) -> Result<Value> {
             "expected a value",
         ));
     }
-    let expr: Expr = syn::parse2(tokens.clone())?;
+    let expr: Expr = syn::parse2(tokens.clone()).map_err(|e| {
+        // An expression cut short (`x +`) fails at the end of its own token
+        // list, a position with no span. Point at the expression instead.
+        if e.to_string().starts_with("unexpected end of input") {
+            Error::new_spanned(&tokens, e)
+        } else {
+            e
+        }
+    })?;
     let value = match &expr {
         Expr::Lit(lit) => literal(&lit.lit, false)?,
         Expr::Unary(unary) if matches!(unary.op, UnOp::Neg(_)) => match &*unary.expr {

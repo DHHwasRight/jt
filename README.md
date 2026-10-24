@@ -283,6 +283,21 @@ write a template for them.
 - A `{` in value position is always an object. Wrap a Rust block expression
   in parentheses: `( { let x = 1; x } )`.
 
+## Editor support
+
+`crates/jt-lsp` is a language server for `.jt` files. It reports parser
+errors as you type, and gives hover, go to definition, references,
+completion, symbols and a `jt/expand` request that returns the generated
+Rust. `editors/vscode` is the VS Code extension for it.
+
+```
+mise run vscode   # build, package and install the extension
+mise run lsp      # only install jt-lsp into ~/.cargo/bin, for other editors
+```
+
+Any LSP client works: run `jt-lsp` over stdio for the `jt` language. Types
+are not checked in the editor; cargo checks them when it builds.
+
 ## Crates
 
 | Crate | Content |
@@ -290,6 +305,7 @@ write a template for them.
 | `jt` | runtime: `ToJson`, `Out`, `Stream`, pool, output functions; re-exports the macros |
 | `jt-core` | parser and code generator, testable without a compiler |
 | `jt-macros` | `template!`, `load!`, `load_dir!`, `json!`, `write_json!` |
+| `jt-lsp` | language server for `.jt` files |
 
 ## Development
 

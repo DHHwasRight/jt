@@ -1,0 +1,105 @@
+{
+  "name": "jt",
+  "displayName": "jt templates",
+  "description": "Language support for jt `.jt` JSON template files: highlighting, errors, go to definition, hover and the generated Rust.",
+  "version": "0.1.0",
+  "publisher": "jt",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "workspaceContains:**/*.jt"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "jt",
+        "aliases": [
+          "jt",
+          "JSON template"
+        ],
+        "extensions": [
+          ".jt"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "jt",
+        "scopeName": "source.jt",
+        "path": "./syntaxes/jt.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "jt",
+      "properties": {
+        "jt.server.path": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Path to the `jt-lsp` binary. When empty, the extension uses the binary bundled with it, then `jt-lsp` on `PATH`."
+        },
+        "jt.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Logs the messages between VS Code and the jt language server."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "jt.showExpansion",
+        "title": "Show Generated Rust",
+        "category": "jt",
+        "icon": "$(code)"
+      },
+      {
+        "command": "jt.restartServer",
+        "title": "Restart Language Server",
+        "category": "jt"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "jt.showExpansion",
+          "when": "editorLangId == jt",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "jt.showExpansion",
+          "when": "editorLangId == jt"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20",
+    "check": "tsc --noEmit -p .",
+    "server": "cargo build --release -p jt-lsp --manifest-path ../../Cargo.toml && mkdir -p server && cp ../../target/release/jt-lsp server/",
+    "package": "npm run check && npm run build && npm run server && vsce package --no-dependencies --allow-missing-repository --skip-license -o jt.vsix"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  }
+}

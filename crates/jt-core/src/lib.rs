@@ -4,7 +4,7 @@
 //! `expand_*` functions here. Keeping the logic in a normal library makes it
 //! testable without a compiler in the loop.
 
-mod ast;
+pub mod ast;
 mod codegen;
 mod escape;
 mod parse;
@@ -13,6 +13,14 @@ use proc_macro2::TokenStream;
 use quote::ToTokens;
 
 pub use escape::quote_str;
+
+/// Parses template source without generating code.
+///
+/// Editor tooling uses this: the items keep the spans of the source, so a
+/// template's name and signature point back into the file.
+pub fn parse_items(input: TokenStream) -> syn::Result<Vec<ast::Item>> {
+    parse::items(input)
+}
 
 /// Expands template source: templates become code, other items pass through.
 pub fn expand_items(input: TokenStream) -> syn::Result<TokenStream> {

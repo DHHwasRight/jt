@@ -1,6 +1,6 @@
 //! The syntax tree of a template body.
 
-use proc_macro2::TokenStream;
+use proc_macro2::{Span, TokenStream};
 use syn::{Attribute, Signature, Visibility};
 
 /// One item of a template source: a template, or Rust passed through.
@@ -15,6 +15,8 @@ pub struct Template {
     pub vis: Visibility,
     pub sig: Signature,
     pub body: Value,
+    /// The closing `}` of an object body, or the `;` after `= value`.
+    pub end: Span,
 }
 
 /// A JSON value.

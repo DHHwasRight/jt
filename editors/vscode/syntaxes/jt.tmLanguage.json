@@ -1,0 +1,85 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "jt",
+  "scopeName": "source.jt",
+  "comment": "A .jt file is Rust with JSON template bodies. The jt rules come first; everything else is the Rust grammar that ships with VS Code.",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#function-head" },
+    { "include": "#json-return" },
+    { "include": "#key" },
+    { "include": "#optional-key-marker" },
+    { "include": "#spread" },
+    { "include": "#null" },
+    { "include": "source.rust" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.documentation.jt",
+          "match": "///.*$"
+        },
+        {
+          "name": "comment.line.double-slash.jt",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.jt",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "function-head": {
+      "comment": "Matched here, not by the Rust grammar: its `fn` rule runs to the next `{` or `;`, which would swallow a whole `= value;` template body.",
+      "match": "\\b(fn)\\s+((?:r#)?[A-Za-z_][A-Za-z0-9_]*)",
+      "captures": {
+        "1": { "name": "keyword.other.fn.rust" },
+        "2": { "name": "entity.name.function.jt" }
+      }
+    },
+    "json-return": {
+      "match": "(->)\\s*(Json)\\b",
+      "captures": {
+        "1": { "name": "keyword.operator.arrow.skinny.rust" },
+        "2": { "name": "support.type.jt" }
+      }
+    },
+    "key": {
+      "comment": "A string followed by `:` or `?:` (not `::`) is an object key.",
+      "begin": "(\")(?=(?:[^\"\\\\]|\\\\.)*\"\\s*\\??\\s*:(?!:))",
+      "beginCaptures": {
+        "1": { "name": "punctuation.support.type.property-name.begin.json" }
+      },
+      "end": "(\")\\s*(\\?)?\\s*(:)",
+      "endCaptures": {
+        "1": { "name": "punctuation.support.type.property-name.end.json" },
+        "2": { "name": "keyword.operator.optional.jt" },
+        "3": { "name": "punctuation.separator.dictionary.key-value.json" }
+      },
+      "contentName": "support.type.property-name.json",
+      "patterns": [
+        {
+          "name": "constant.character.escape.json",
+          "match": "\\\\(?:[\"\\\\/bfnrt]|u\\{[0-9A-Fa-f]{1,6}\\}|x[0-7][0-9A-Fa-f]|.)"
+        }
+      ]
+    },
+    "optional-key-marker": {
+      "comment": "`ident?:` and `[expr]?:` keys.",
+      "match": "(\\?)(?=\\s*:(?!:))",
+      "captures": {
+        "1": { "name": "keyword.operator.optional.jt" }
+      }
+    },
+    "spread": {
+      "match": "\\.\\.\\.(?=\\s*[A-Za-z_&(\\[*])",
+      "name": "keyword.operator.spread.jt"
+    },
+    "null": {
+      "match": "\\bnull\\b",
+      "name": "constant.language.null.jt"
+    }
+  }
+}

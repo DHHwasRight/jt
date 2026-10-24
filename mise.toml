@@ -9,3 +9,12 @@ run = "cargo clippy --workspace --all-targets -- -D warnings"
 [tasks.bench]
 description = "Compare jt with serde_json"
 run = "cargo bench -p jt --bench vs_serde"
+
+[tasks.lsp]
+description = "Install jt-lsp into ~/.cargo/bin"
+run = "cargo install --path crates/jt-lsp --locked"
+
+[tasks.vscode]
+description = "Build the VS Code extension with the server inside and install it"
+dir = "editors/vscode"
+run = ["npm ci --no-fund --no-audit", "npm run package", "code --install-extension jt.vsix --force"]
