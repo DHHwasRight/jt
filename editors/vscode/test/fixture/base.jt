@@ -1,0 +1,5 @@
+/// Fields every record has.
+pub fn Base(id: u64) -> Json {
+    "id": id,
+    "kind": "record",
+}

@@ -37,3 +37,13 @@ This builds `jt-lsp` in release mode, puts it inside the extension, packages
   with the same name in different files both match.
 - Files for the Go or Crystal jt (they start with `package` or `module`)
   get highlighting but no diagnostics.
+
+## Test
+
+```sh
+mise run vscode-test
+```
+
+This starts VS Code with the extension, opens `test/fixture`, and checks
+hover, definition, references, completion, outline, diagnostics and the
+generated Rust view through VS Code's own APIs.

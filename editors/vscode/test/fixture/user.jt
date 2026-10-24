@@ -1,0 +1,4 @@
+pub fn User(id: u64, name: &str) -> Json {
+    ...Base(id),
+    "name": name,
+}

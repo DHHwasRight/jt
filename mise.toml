@@ -18,3 +18,8 @@ run = "cargo install --path crates/jt-lsp --locked"
 description = "Build the VS Code extension with the server inside and install it"
 dir = "editors/vscode"
 run = ["npm ci --no-fund --no-audit", "npm run package", "code --install-extension jt.vsix --force"]
+
+[tasks.vscode-test]
+description = "Run the extension in VS Code and check every feature"
+dir = "editors/vscode"
+run = ["npm ci --no-fund --no-audit", "npm test"]

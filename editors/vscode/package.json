@@ -90,7 +90,9 @@
     "build": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --target=node20",
     "check": "tsc --noEmit -p .",
     "server": "cargo build --release -p jt-lsp --manifest-path ../../Cargo.toml && mkdir -p server && cp ../../target/release/jt-lsp server/",
-    "package": "npm run check && npm run build && npm run server && vsce package --no-dependencies --allow-missing-repository --skip-license -o jt.vsix"
+    "package": "npm run check && npm run build && npm run server && vsce package --no-dependencies --allow-missing-repository --skip-license -o jt.vsix",
+    "build:test": "esbuild test/suite.ts --bundle --outfile=out/suite.js --external:vscode --format=cjs --platform=node --target=node20 && esbuild test/runTest.ts --bundle --outfile=out/runTest.js --format=cjs --platform=node --target=node20",
+    "test": "npm run build && npm run build:test && node out/runTest.js"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
@@ -100,6 +102,7 @@
     "@types/vscode": "^1.90.0",
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.25.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "@vscode/test-electron": "^2.4.0"
   }
 }
