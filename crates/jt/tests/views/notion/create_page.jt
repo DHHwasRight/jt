@@ -1,0 +1,10 @@
+pub fn CreatePage(parent_id: &str, title: &str) -> Json {
+    "parent": { "database_id": parent_id },
+    "properties": {
+        "Name": {
+            "title": [
+                { "text": { "content": title } }
+            ]
+        }
+    }
+}

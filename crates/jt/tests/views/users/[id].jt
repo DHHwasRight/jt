@@ -1,0 +1,5 @@
+// A template under a parameterised route, named the way the route is.
+pub fn Detail(id: u64, name: &str) -> Json {
+    "id": id,
+    "name": name,
+}

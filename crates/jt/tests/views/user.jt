@@ -1,0 +1,21 @@
+// A `.jt` file is Rust: `use` items, helpers and templates side by side.
+
+pub struct Account<'a> {
+    pub id: u64,
+    pub name: &'a str,
+    pub email: Option<&'a str>,
+    pub roles: Vec<&'a str>,
+}
+
+fn initials(name: &str) -> String {
+    name.split_whitespace().filter_map(|w| w.chars().next()).collect()
+}
+
+pub fn User(account: &Account<'_>) -> Json {
+    "id": account.id,
+    "name": account.name,
+    "initials": initials(account.name),
+    "email"?: account.email,
+    "roles": [ for r in &account.roles { r } ],
+    "admin": account.roles.contains(&"admin"),
+}

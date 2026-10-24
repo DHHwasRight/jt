@@ -1,0 +1,29 @@
+[package]
+name = "jt"
+description = "Compile-time JSON templates for Rust"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+jt-macros = { workspace = true, optional = true }
+itoa = { workspace = true }
+zmij = { workspace = true }
+serde = { version = "1", optional = true }
+serde_json = { version = "1", optional = true }
+
+[features]
+default = ["macros"]
+macros = ["dep:jt-macros"]
+# `jt::Serde(&value)` embeds any `serde::Serialize` value in a template.
+serde = ["dep:serde", "dep:serde_json"]
+
+[dev-dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+criterion = { version = "0.5", default-features = false, features = ["cargo_bench_support"] }
+
+[[bench]]
+name = "vs_serde"
+harness = false

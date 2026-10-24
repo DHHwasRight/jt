@@ -1,0 +1,11 @@
+[tasks.test]
+description = "Run every test"
+run = "cargo test --workspace"
+
+[tasks.lint]
+description = "Clippy over all targets"
+run = "cargo clippy --workspace --all-targets -- -D warnings"
+
+[tasks.bench]
+description = "Compare jt with serde_json"
+run = "cargo bench -p jt --bench vs_serde"

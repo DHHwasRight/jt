@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = ["crates/jt", "crates/jt-core", "crates/jt-macros"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+license = "MIT"
+
+[workspace.dependencies]
+jt = { path = "crates/jt", version = "0.1.0" }
+jt-core = { path = "crates/jt-core", version = "0.1.0" }
+jt-macros = { path = "crates/jt-macros", version = "0.1.0" }
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "2", features = ["full", "visit-mut", "extra-traits"] }
+itoa = "1"
+zmij = "1"
+
+[profile.bench]
+lto = true
+codegen-units = 1
