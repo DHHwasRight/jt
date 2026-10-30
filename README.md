@@ -1,6 +1,18 @@
-# jt
+<p align="center">
+  <img src="https://raw.githubusercontent.com/DHHwasRight/.github/main/profile/logo.png" width="96" alt="">
+</p>
 
-Compile-time JSON templates for Rust. A template is a Rust function whose
+<h1 align="center">jt</h1>
+
+<p align="center">Compile-time JSON templates for Rust.</p>
+
+> **Status:** The DHHwasRight org is named after RailsConf 2026. It is an
+> attempt to implement DHH's claims (HTML over the wire, no build step, one
+> database) in Rust, to see how far that gets. This project is mostly vibe
+> coded: an LLM wrote most of it. It is a thought exercise. We use it for
+> internal products where mission criticality is not needed.
+
+A template is a Rust function whose
 body is JSON with holes. A proc macro compiles it into straight-line writes.
 Nothing is interpreted at runtime, and no intermediate tree is built.
 
@@ -72,7 +84,7 @@ writes look free.
 
 ```toml
 [dependencies]
-jt = { path = "crates/jt" }
+jt = { git = "https://github.com/DHHwasRight/jt.git", branch = "main" }
 ```
 
 Three ways to write templates:
@@ -314,3 +326,17 @@ cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 cargo bench -p jt --bench vs_serde
 ```
+
+## Part of DHHwasRight
+
+- [brocanth](https://github.com/DHHwasRight/brocanth): Rust framework for HTML-first apps and API services. Postgres-first, day-2 ready. `brocanth-i18n` depends on jt.
+- [rsx](https://github.com/DHHwasRight/rsx): Compile-time HTML templates for Rust. jt takes ideas from it.
+- [zod](https://github.com/DHHwasRight/zod): Schemas that a literal must satisfy at compile time and input must satisfy at run time.
+- [strata](https://github.com/DHHwasRight/strata): Layered async caching that reads like memoization.
+- [depoth](https://github.com/DHHwasRight/depoth): A static content framework in Rust. Templates compile; content does not.
+- [prerender](https://github.com/DHHwasRight/prerender): A static site generator for prerendered partial navigation.
+- [htmx](https://github.com/DHHwasRight/htmx): dp-swap: partial page updates for prerendered sites. An htmx rewrite in TypeScript.
+
+## License
+
+MIT, as `Cargo.toml` states. The repo has no LICENSE file yet.
