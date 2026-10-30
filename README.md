@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/DHHwasRight/.github/main/profile/logo.png" width="96" alt="">
-</p>
-
 <h1 align="center">jt</h1>
 
 <p align="center">Compile-time JSON templates for Rust.</p>
