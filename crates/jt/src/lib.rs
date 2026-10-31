@@ -39,6 +39,7 @@
 extern crate self as jt;
 
 mod escape;
+pub mod grammar;
 mod out;
 pub mod pool;
 mod value;

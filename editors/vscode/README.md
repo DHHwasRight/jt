@@ -47,3 +47,14 @@ mise run vscode-test
 This starts VS Code with the extension, opens `test/fixture`, and checks
 hover, definition, references, completion, outline, diagnostics and the
 generated Rust view through VS Code's own APIs.
+
+## Grammars
+
+- `syntaxes/jt.tmLanguage.json`: `.jt` files. Template bodies (`-> Json { … }`, `-> Json = …;`)
+  get JSON keys, `?` optional keys, `...` spreads, and `null`; the rest is VS Code's Rust grammar.
+- `syntaxes/jt-injection.tmLanguage.json`: injected into Rust files, so the bodies of
+  `jt::template! { … }`, `jt::json!( … )`, and `jt::write_json!( … )` get the same colors.
+
+The originals are in `crates/jt/grammar/`; `cargo test -p jt --test grammar` fails when a copy here
+differs. The crate exposes them as `jt::grammar::{TEXTMATE, INJECTION}` for other highlighters.
+`npm run test:grammar` runs both with vscode-textmate.

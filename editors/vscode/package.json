@@ -35,6 +35,13 @@
         "language": "jt",
         "scopeName": "source.jt",
         "path": "./syntaxes/jt.tmLanguage.json"
+      },
+      {
+        "scopeName": "source.rust.jt-injection",
+        "path": "./syntaxes/jt-injection.tmLanguage.json",
+        "injectTo": [
+          "source.rust"
+        ]
       }
     ],
     "configuration": {
@@ -92,7 +99,8 @@
     "server": "cargo build --release -p jt-lsp --manifest-path ../../Cargo.toml && mkdir -p server && cp ../../target/release/jt-lsp server/",
     "package": "npm run check && npm run build && npm run server && vsce package --no-dependencies --allow-missing-repository --skip-license -o jt.vsix",
     "build:test": "esbuild test/suite.ts --bundle --outfile=out/suite.js --external:vscode --format=cjs --platform=node --target=node20 && esbuild test/runTest.ts --bundle --outfile=out/runTest.js --format=cjs --platform=node --target=node20",
-    "test": "npm run build && npm run build:test && node out/runTest.js"
+    "test": "node test/grammar.test.mjs && npm run build && npm run build:test && node out/runTest.js",
+    "test:grammar": "node test/grammar.test.mjs"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
@@ -100,9 +108,12 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^2.4.0",
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.25.0",
+    "tm-grammars": "^1.32.22",
     "typescript": "^5.6.0",
-    "@vscode/test-electron": "^2.4.0"
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
   }
 }
